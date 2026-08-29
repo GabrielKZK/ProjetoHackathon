@@ -4,6 +4,7 @@ import com.projeto.hackathon.dto.*;
 import com.projeto.hackathon.entity.*;
 import com.projeto.hackathon.exception.BusinessException;
 import com.projeto.hackathon.repository.*;
+import com.projeto.hackathon.websocket.EventoPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ public class NotaFiscalService {
     private final DocaRepository docaRepository;
     private final ProdutoRepository produtoRepository;
     private final PaleteRepository paleteRepository;
+    private final EventoPublisher eventoPublisher;
 
     public List<NotaFiscalResponseDTO> listar(Long docaId, String status) {
         List<NotaFiscal> notas;
@@ -79,7 +81,9 @@ public class NotaFiscalService {
             nota = notaFiscalRepository.save(nota);
         }
 
-        return toDTO(nota);
+        NotaFiscalResponseDTO notaCriadaDTO = toDTO(nota);
+        eventoPublisher.notaFiscalAtualizada(notaCriadaDTO);
+        return notaCriadaDTO;
     }
 
     @Transactional
@@ -112,6 +116,9 @@ public class NotaFiscalService {
         List<PaleteResponseDTO> paletesDTO = paletesGerados.stream()
                 .map(this::paleteToDTO)
                 .collect(Collectors.toList());
+
+        eventoPublisher.notaFiscalAtualizada(toDTO(nota));
+        paletesDTO.forEach(eventoPublisher::paleteAtualizado);
 
         return ConferenciaResponseDTO.builder()
                 .status(nota.getStatus().name())
