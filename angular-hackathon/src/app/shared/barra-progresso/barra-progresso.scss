@@ -1,0 +1,43 @@
+.linha {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rotulo {
+  flex-shrink: 0;
+  width: 72px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--texto-fraco);
+  letter-spacing: 0.5px;
+}
+
+.trilho {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface-3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.preenchimento {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.valor {
+  flex-shrink: 0;
+  width: 62px;
+  text-align: right;
+  font-size: 0.92rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.detalhe {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: var(--texto-fraco);
+}

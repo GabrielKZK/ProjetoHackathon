@@ -1,0 +1,28 @@
+<div class="mapa">
+  @for (bloco of blocos(); track bloco.rua) {
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-titulo">RUA {{ bloco.rua }}</span>
+        <span class="bloco-contagem">{{ bloco.ocupadas }}/{{ bloco.total }}</span>
+      </div>
+
+      <div class="grade">
+        @for (p of bloco.posicoes; track p.id) {
+          <div
+            class="celula"
+            [class]="classeStatus(p.status)"
+            [attr.title]="tooltip(p)"
+          ></div>
+        }
+      </div>
+    </div>
+  } @empty {
+    <div class="vazio">Carregando posições...</div>
+  }
+</div>
+
+<div class="legenda">
+  <span class="item"><i class="quadro livre"></i> Livre</span>
+  <span class="item"><i class="quadro ocupada"></i> Ocupada</span>
+  <span class="item"><i class="quadro bloqueada"></i> Bloqueada</span>
+</div>

@@ -1,0 +1,103 @@
+.filtros {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--texto-fraco);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.chip:hover:not(:disabled) {
+  background: var(--surface-2);
+  color: var(--texto);
+}
+
+.chip.ativo {
+  color: #fff;
+  background: var(--laranja);
+  border-color: var(--laranja);
+}
+
+.chip-num {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  font-size: 0.76rem;
+}
+
+.linha {
+  cursor: pointer;
+}
+
+.forte {
+  font-weight: 800;
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.doca {
+  display: inline-block;
+  padding: 4px 11px;
+  border-radius: 6px;
+  background: rgba(59, 130, 246, 0.14);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #93bdff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.seta {
+  color: var(--texto-fraco);
+  font-size: 0.7rem;
+  text-align: right;
+}
+
+.detalhe-linha td {
+  background: var(--surface-2);
+  padding: 0;
+}
+
+.detalhe {
+  padding: 18px 22px;
+}
+
+.detalhe-titulo {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+  margin-bottom: 12px;
+}
+
+.interna th {
+  background: var(--surface-3);
+}
+
+.interna td {
+  background: var(--surface);
+}
+
+.neg {
+  color: var(--vermelho);
+  font-weight: 800;
+}
+
+.pos {
+  color: var(--verde);
+  font-weight: 800;
+}

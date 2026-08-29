@@ -1,0 +1,134 @@
+<div class="page-header">
+  <div>
+    <h1>Dashboard Operacional</h1>
+    <p class="texto-fraco">Galpão Gollinho · 6 ruas × 4 andares × 8 posições</p>
+  </div>
+
+  <div class="status-sync">
+    <span class="pulso"></span>
+    <span>
+      Sincronizando a cada 3s
+      @if (atualizadoEm()) {
+        · {{ atualizadoEm() }}
+      }
+    </span>
+  </div>
+</div>
+
+@if (erro()) {
+  <div class="erro-box mb-16">{{ erro() }}</div>
+}
+
+<!-- ===== Cards principais ===== -->
+<div class="cards-topo mb-24">
+  <app-card-metrica
+    titulo="Ocupação do galpão"
+    [valor]="ocupadas() + '/' + totalPosicoes"
+    [detalhe]="percentual() + '% das posições ocupadas'"
+    [destaque]="true"
+    cor="laranja"
+  />
+
+  <app-card-metrica
+    titulo="Posições livres"
+    [valor]="livres() | number"
+    unidade="posições"
+    [detalhe]="bloqueadas() + ' bloqueadas'"
+    cor="verde"
+  />
+
+  <app-card-metrica
+    titulo="Volume armazenado"
+    [valor]="litros() | number"
+    unidade="L"
+    [detalhe]="'de ' + (capacidadeLitros | number) + ' L de capacidade'"
+    cor="neutro"
+  />
+
+  <app-card-metrica
+    titulo="Garrafas em estoque"
+    [valor]="garrafas() | number"
+    unidade="un"
+    [detalhe]="(totalFardos() | number) + ' fardos'"
+    cor="amarelo"
+  />
+</div>
+
+<!-- ===== Barra de volume ===== -->
+<section class="card mb-24">
+  <div class="card-titulo">Capacidade utilizada</div>
+  <app-barra-progresso
+    [percentual]="percentualVolume()"
+    [altura]="22"
+    [detalhe]="(litros() | number) + ' L de ' + (capacidadeLitros | number) + ' L'"
+  />
+</section>
+
+<div class="colunas mb-24">
+  <!-- ===== Mapa do galpao ===== -->
+  <section class="card">
+    <div class="card-titulo">Mapa do galpão · 192 posições</div>
+    <app-mapa-galpao [posicoes]="posicoes()" />
+  </section>
+
+  <!-- ===== Ocupação por rua ===== -->
+  <section class="card">
+    <div class="card-titulo">Ocupação por rua</div>
+
+    <div class="ruas">
+      @for (r of porRua(); track r.rua) {
+        <app-barra-progresso
+          [rotulo]="'Rua ' + r.rua"
+          [percentual]="r.percentual"
+          [detalhe]="r.ocupadas + ' de 32 posições'"
+        />
+      } @empty {
+        <div class="vazio">Carregando ocupação...</div>
+      }
+    </div>
+  </section>
+</div>
+
+<!-- ===== Saldo por sabor ===== -->
+<section class="card">
+  <div class="card-titulo">Saldo por sabor</div>
+
+  <div class="sabores">
+    @for (s of estoque(); track s.sabor) {
+      <div class="sabor-card" [style.border-top-color]="corDoSabor(s.sabor)">
+        <div class="sabor-header">
+          <span class="bolinha" [style.background]="corDoSabor(s.sabor)"></span>
+          <span class="sabor-nome">{{ s.sabor }}</span>
+        </div>
+
+        <div class="sabor-grid">
+          <div>
+            <span class="n">{{ s.paletes | number }}</span>
+            <span class="l">Paletes</span>
+          </div>
+          <div>
+            <span class="n">{{ s.fardos | number }}</span>
+            <span class="l">Fardos</span>
+          </div>
+          <div>
+            <span class="n">{{ s.garrafas | number }}</span>
+            <span class="l">Garrafas</span>
+          </div>
+          <div>
+            <span class="n destaque">{{ s.litros | number }}</span>
+            <span class="l">Litros</span>
+          </div>
+        </div>
+
+        <div class="sabor-posicoes mono">
+          {{ s.posicoes.slice(0, 3).join(' · ') }}
+          @if (s.posicoes.length > 3) {
+            <span class="texto-fraco"> +{{ s.posicoes.length - 3 }}</span>
+          }
+        </div>
+      </div>
+    } @empty {
+      <div class="vazio">Carregando estoque...</div>
+    }
+  </div>
+</section>

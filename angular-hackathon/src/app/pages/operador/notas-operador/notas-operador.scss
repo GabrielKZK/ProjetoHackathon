@@ -1,0 +1,23 @@
+.lista-notas {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.card-nota {
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.card-nota:hover {
+  border-color: var(--laranja);
+}
+.card-nota:active {
+  transform: scale(0.99);
+}
+.nota-numero {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.nota-meta {
+  font-size: 0.85rem;
+  margin-top: 2px;
+}

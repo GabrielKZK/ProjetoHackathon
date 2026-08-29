@@ -1,0 +1,110 @@
+<div class="page-header">
+  <div>
+    <h1>Notas Fiscais</h1>
+    <p class="texto-fraco">Cargas recebidas e status de conferência nas docas.</p>
+  </div>
+  <div class="flex">
+    <button class="secundario" (click)="carregar()">Atualizar</button>
+    <button routerLink="/notas-fiscais/nova">+ Lançar NF</button>
+  </div>
+</div>
+
+<div class="filtros mb-24">
+  @for (f of filtros; track f.valor) {
+    <button
+      class="chip"
+      [class.ativo]="filtro() === f.valor"
+      (click)="filtro.set(f.valor)"
+    >
+      {{ f.rotulo }}
+      <span class="chip-num">{{ contar(f.valor) }}</span>
+    </button>
+  }
+</div>
+
+@if (erro()) {
+  <div class="erro-box mb-16">{{ erro() }}</div>
+}
+
+<div class="tabela-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>NF</th>
+        <th>Série</th>
+        <th>Fornecedor</th>
+        <th>Emissão</th>
+        <th>Doca</th>
+        <th>Fardos</th>
+        <th>Paletes</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (nota of visiveis(); track nota.id) {
+        <tr class="linha" (click)="alternar(nota.id)">
+          <td class="mono forte">{{ nota.numero }}</td>
+          <td class="mono">{{ nota.serie }}</td>
+          <td>{{ nota.fornecedor }}</td>
+          <td class="mono">{{ data(nota.dataEmissao) }}</td>
+          <td>
+            <span class="doca">{{ nota.doca.descricao }}</span>
+          </td>
+          <td class="num">{{ totalFardos(nota) }}</td>
+          <td class="num forte">{{ totalPaletes(nota) }}</td>
+          <td><app-badge-status [status]="nota.status" /></td>
+          <td class="seta">{{ expandida() === nota.id ? '▲' : '▼' }}</td>
+        </tr>
+
+        @if (expandida() === nota.id) {
+          <tr class="detalhe-linha">
+            <td colspan="9">
+              <div class="detalhe">
+                <div class="detalhe-titulo">Itens da nota {{ nota.numero }}</div>
+
+                <table class="interna">
+                  <thead>
+                    <tr>
+                      <th>Sabor</th>
+                      <th>Esperados</th>
+                      <th>Conferidos</th>
+                      <th>Divergência</th>
+                      <th>Paletes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of nota.itens; track item.produto.id) {
+                      <tr>
+                        <td>{{ item.produto.sabor }}</td>
+                        <td class="num">{{ item.fardosEsperados }}</td>
+                        <td class="num">{{ item.fardosConferidos }}</td>
+                        <td
+                          class="num"
+                          [class.neg]="divergencia(item.fardosEsperados, item.fardosConferidos) < 0"
+                          [class.pos]="divergencia(item.fardosEsperados, item.fardosConferidos) === 0"
+                        >
+                          {{ divergencia(item.fardosEsperados, item.fardosConferidos) }}
+                        </td>
+                        <td class="num">{{ item.fardosEsperados / 100 | number: '1.0-2' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+        }
+      } @empty {
+        <tr>
+          <td colspan="9">
+            <div class="vazio">
+              {{ carregando() ? 'Carregando notas...' : 'Nenhuma nota fiscal nesse filtro.' }}
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

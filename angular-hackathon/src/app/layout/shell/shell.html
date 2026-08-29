@@ -1,0 +1,43 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="marca">
+      <div class="logo">G</div>
+      <div>
+        <div class="marca-nome">GOLLINHO</div>
+        <div class="marca-sub">WMS · Retaguarda</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      @for (item of itensVisiveis; track item.rota) {
+        <a
+          class="nav-item"
+          [routerLink]="item.rota"
+          routerLinkActive="ativo"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span class="nav-icone">{{ item.icone }}</span>
+          <span>{{ item.rotulo }}</span>
+        </a>
+      }
+    </nav>
+
+    <div class="rodape">
+      @if (usarMock) {
+        <div class="tag-mock">MODO MOCK</div>
+      }
+      <div class="usuario">
+        <div class="avatar">{{ auth.iniciais() }}</div>
+        <div class="usuario-info">
+          <div class="usuario-nome">{{ auth.nome() }}</div>
+          <div class="usuario-perfil">{{ auth.perfil() }}</div>
+        </div>
+      </div>
+      <button class="secundario btn-sair" (click)="sair()">Sair</button>
+    </div>
+  </aside>
+
+  <main class="conteudo">
+    <router-outlet />
+  </main>
+</div>

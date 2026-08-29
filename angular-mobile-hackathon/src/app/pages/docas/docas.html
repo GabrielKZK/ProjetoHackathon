@@ -1,0 +1,23 @@
+<div class="page-header">
+  <div>
+    <h1>Selecione a doca</h1>
+    <p class="texto-fraco">Onde a carga está sendo recebida agora?</p>
+  </div>
+</div>
+
+@if (erro()) {
+  <div class="erro-box mb-16">{{ erro() }}</div>
+}
+
+@if (carregando()) {
+  <div class="vazio">Carregando docas...</div>
+} @else {
+  <div class="grade-docas">
+    @for (doca of docas(); track doca.id) {
+      <button type="button" class="btn-toque" (click)="selecionar(doca)">
+        <span class="btn-toque-icone">🚛</span>
+        <span>{{ doca.descricao }}</span>
+      </button>
+    }
+  </div>
+}

@@ -1,0 +1,100 @@
+.operador-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.topo-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: linear-gradient(140deg, var(--laranja), var(--laranja-esc));
+  color: #fff;
+  font-weight: 800;
+}
+
+.topo-titulo {
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.topo-doca {
+  font-size: 0.76rem;
+  color: var(--laranja);
+  font-weight: 700;
+}
+.topo-doca.fraca {
+  color: var(--texto-fraco);
+  font-weight: 600;
+}
+
+.topo-usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--texto-fraco);
+  flex-shrink: 0;
+}
+.topo-usuario span {
+  display: none;
+}
+.topo-usuario button {
+  padding: 8px 14px;
+  font-size: 0.82rem;
+}
+
+.link-gerenciador {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 1rem;
+}
+.link-gerenciador:hover {
+  background: var(--surface-2);
+}
+
+.conteudo-operador {
+  flex: 1;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+}
+
+@media (min-width: 620px) {
+  .topo-usuario span {
+    display: inline;
+  }
+  .conteudo-operador {
+    max-width: 640px;
+  }
+}

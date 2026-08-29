@@ -1,0 +1,32 @@
+<div class="page-header">
+  <div>
+    <h1>Notas aguardando conferência</h1>
+    <p class="texto-fraco">Toque numa nota para iniciar a conferência cega.</p>
+  </div>
+  <button type="button" class="secundario" (click)="irParaPaletes()">📦 Paletes em doca</button>
+</div>
+
+@if (erro()) {
+  <div class="erro-box mb-16">{{ erro() }}</div>
+}
+
+@if (carregando()) {
+  <div class="vazio">Carregando notas...</div>
+} @else if (notas().length === 0) {
+  <div class="vazio">✅ Nenhuma nota aguardando conferência nesta doca.</div>
+} @else {
+  <div class="lista-notas">
+    @for (nota of notas(); track nota.id) {
+      <div class="card card-nota" (click)="abrir(nota)">
+        <div class="flex-entre">
+          <div>
+            <div class="mono nota-numero">NF {{ nota.numero }}/{{ nota.serie }}</div>
+            <div class="texto-fraco">{{ nota.fornecedor }}</div>
+            <div class="texto-fraco nota-meta">{{ formatarData(nota.dataEmissao) }} · {{ nota.itens.length }} sabor(es)</div>
+          </div>
+          <app-badge-status [status]="nota.status" />
+        </div>
+      </div>
+    }
+  </div>
+}

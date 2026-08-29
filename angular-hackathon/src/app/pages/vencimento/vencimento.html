@@ -1,0 +1,79 @@
+<div class="page-header">
+  <div>
+    <h1>Controle de Vencimento</h1>
+    <p class="texto-fraco">Paletes próximos da data de validade, priorizados para expedição.</p>
+  </div>
+  <button class="secundario" (click)="carregar()">Atualizar</button>
+</div>
+
+<div class="resumo mb-24">
+  <div class="resumo-card critico">
+    <span class="resumo-num">{{ criticos() }}</span>
+    <span class="resumo-txt">Críticos · menos de 7 dias</span>
+  </div>
+  <div class="resumo-card alerta">
+    <span class="resumo-num">{{ alertas() }}</span>
+    <span class="resumo-txt">Atenção · menos de 30 dias</span>
+  </div>
+  <div class="resumo-card ok">
+    <span class="resumo-num">{{ tranquilos() }}</span>
+    <span class="resumo-txt">Normais · 30 dias ou mais</span>
+  </div>
+</div>
+
+<div class="filtros mb-24">
+  <span class="filtro-label">Janela de dias</span>
+  @for (d of opcoesDias; track d) {
+    <button class="chip" [class.ativo]="dias() === d" (click)="trocarDias(d)">{{ d }} dias</button>
+  }
+</div>
+
+@if (erro()) {
+  <div class="erro-box mb-16">{{ erro() }}</div>
+}
+
+<div class="tabela-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Palete</th>
+        <th>Sabor</th>
+        <th>Posição</th>
+        <th>Validade</th>
+        <th>Dias restantes</th>
+        <th>Situação</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (p of paletes(); track p.codigoPalete) {
+        <tr [class]="'linha-' + semaforo(p.diasRestantes)">
+          <td class="col-farol">
+            <span class="farol" [class]="semaforo(p.diasRestantes)"></span>
+          </td>
+          <td class="mono forte">{{ p.codigoPalete }}</td>
+          <td>{{ p.sabor }}</td>
+          <td class="mono">{{ p.posicao }}</td>
+          <td class="mono">{{ data(p.dataValidade) }}</td>
+          <td class="num">
+            <span class="dias" [class]="semaforo(p.diasRestantes)">{{ p.diasRestantes }}</span>
+          </td>
+          <td>
+            <span class="situacao" [class]="semaforo(p.diasRestantes)">
+              {{ rotuloSemaforo(p.diasRestantes) }}
+            </span>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7">
+            <div class="vazio">
+              {{ carregando() ? 'Carregando paletes...' : 'Nenhum palete vencendo nessa janela.' }}
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

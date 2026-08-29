@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>Gollinho WMS — Armazenagem</title>
+  <meta name="theme-color" content="#0d1014" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <div id="topbar"></div>
+
+    <div id="cabecalho-palete" class="card p-3 mb-3"></div>
+
+    <div class="passos">
+      <div class="passo" data-passo="rua">Rua</div>
+      <div class="passo" data-passo="andar">Andar</div>
+      <div class="passo" data-passo="posicao">Posição</div>
+      <div class="passo" data-passo="confirmar">Confirmar</div>
+    </div>
+
+    <div id="erro-armazenagem" class="d-none mb-3"></div>
+
+    <button type="button" id="btn-sugestao" class="btn btn-outline-primary touch-btn w-100 mb-3">
+      💡 Usar sugestão do sistema
+    </button>
+
+    <div id="etapa-rua">
+      <h2 class="h6 text-body-secondary mb-2">1. Escolha a rua</h2>
+      <div id="grade-ruas" class="grade-botoes grade-3"></div>
+    </div>
+
+    <div id="etapa-andar" class="d-none">
+      <h2 class="h6 text-body-secondary mb-2">2. Escolha o andar</h2>
+      <div id="grade-andares" class="grade-botoes grade-4"></div>
+      <button type="button" class="btn btn-outline-light touch-btn w-100 mt-3" data-voltar="rua">← Trocar rua</button>
+    </div>
+
+    <div id="etapa-posicao" class="d-none">
+      <h2 class="h6 text-body-secondary mb-2">3. Escolha a posição livre</h2>
+      <div id="grade-posicoes" class="grade-botoes grade-4"></div>
+      <button type="button" class="btn btn-outline-light touch-btn w-100 mt-3" data-voltar="andar">← Trocar andar</button>
+    </div>
+
+    <div id="etapa-confirmar" class="d-none text-center">
+      <h2 class="h6 text-body-secondary mb-2">4. Confirmar posição</h2>
+      <div class="card p-4 mb-3">
+        <div class="text-body-secondary mb-1">Endereço final</div>
+        <div id="endereco-final" class="mono" style="font-size:2rem;font-weight:800;color:var(--laranja);"></div>
+      </div>
+      <button type="button" id="btn-confirmar-armazenagem" class="btn btn-primary touch-btn w-100">Confirmar armazenagem</button>
+      <button type="button" class="btn btn-outline-light touch-btn w-100 mt-3" data-voltar="posicao">← Escolher outra posição</button>
+    </div>
+  </div>
+
+  <div id="carregando" class="d-none">
+    <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/mock.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    if (!exigirLogin()) { /* redirecionado */ }
+    const doca = exigirDoca();
+    const paleteId = Sessao.obterPaleteId();
+    if (doca && !paleteId) window.location.href = 'paletes.html';
+    if (doca) montarTopbar({ titulo: 'Armazenagem', voltarPara: 'paletes.html' });
+
+    let palete = null;
+    let posicoesLivresDaRua = [];
+    const selecao = { rua: null, andar: null, posicaoId: null, posicaoCodigo: null };
+
+    function marcarPasso(nome) {
+      document.querySelectorAll('.passo').forEach((el) => {
+        el.classList.remove('ativo', 'feito');
+        const ordem = ['rua', 'andar', 'posicao', 'confirmar'];
+        if (el.dataset.passo === nome) el.classList.add('ativo');
+        else if (ordem.indexOf(el.dataset.passo) < ordem.indexOf(nome)) el.classList.add('feito');
+      });
+    }
+
+    function mostrarEtapa(nome) {
+      ['rua', 'andar', 'posicao', 'confirmar'].forEach((e) => {
+        document.getElementById(`etapa-${e}`).classList.toggle('d-none', e !== nome);
+      });
+      marcarPasso(nome);
+    }
+
+    document.querySelectorAll('[data-voltar]').forEach((btn) => {
+      btn.addEventListener('click', () => mostrarEtapa(btn.dataset.voltar));
+    });
+
+    async function carregarPalete() {
+      if (!doca || !paleteId) return;
+      mostrarCarregando(true);
+      try {
+        const paletes = await Api.listarPaletes(doca.id, 'EM_DOCA');
+        palete = paletes.find((p) => p.id === Number(paleteId));
+        if (!palete) {
+          mostrarErroInline('erro-armazenagem', { mensagem: 'Palete não encontrado em doca (talvez já armazenado).' });
+          document.getElementById('cabecalho-palete').innerHTML = '';
+          return;
+        }
+        document.getElementById('cabecalho-palete').innerHTML = `
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div class="mono" style="font-size:1.15rem;font-weight:700;">${escaparHtml(palete.codigo)}</div>
+              <div class="text-body-secondary">${escaparHtml(palete.produto.sabor)} · ${palete.fardos} fardos</div>
+            </div>
+            <span class="badge bg-secondary">EM DOCA</span>
+          </div>`;
+        montarGradeRuas();
+      } catch (erro) {
+        mostrarErroInline('erro-armazenagem', erro);
+      } finally {
+        mostrarCarregando(false);
+      }
+    }
+
+    function montarGradeRuas() {
+      const grade = document.getElementById('grade-ruas');
+      grade.innerHTML = Array.from({ length: RUAS }, (_, i) => i + 1).map((rua) => `
+        <button type="button" class="btn btn-outline-primary touch-btn" data-rua="${rua}">Rua ${rua}</button>
+      `).join('');
+      grade.querySelectorAll('button').forEach((btn) => {
+        btn.addEventListener('click', () => escolherRua(Number(btn.dataset.rua)));
+      });
+    }
+
+    async function escolherRua(rua) {
+      selecao.rua = rua;
+      selecao.andar = null;
+      selecao.posicaoId = null;
+      mostrarCarregando(true);
+      limparInline('erro-armazenagem');
+      try {
+        posicoesLivresDaRua = await Api.posicoesLivres(rua);
+        montarGradeAndares();
+        mostrarEtapa('andar');
+      } catch (erro) {
+        mostrarErroInline('erro-armazenagem', erro);
+      } finally {
+        mostrarCarregando(false);
+      }
+    }
+
+    function montarGradeAndares() {
+      const grade = document.getElementById('grade-andares');
+      grade.innerHTML = Array.from({ length: ANDARES }, (_, i) => i + 1).map((andar) => {
+        const livres = posicoesLivresDaRua.filter((p) => p.andar === andar).length;
+        return `
+          <button type="button" class="btn btn-outline-primary touch-btn" data-andar="${andar}" ${livres === 0 ? 'disabled' : ''}>
+            Andar ${andar}<small>${livres} livre(s)</small>
+          </button>`;
+      }).join('');
+      grade.querySelectorAll('button:not(:disabled)').forEach((btn) => {
+        btn.addEventListener('click', () => escolherAndar(Number(btn.dataset.andar)));
+      });
+    }
+
+    function escolherAndar(andar) {
+      selecao.andar = andar;
+      selecao.posicaoId = null;
+      montarGradePosicoes();
+      mostrarEtapa('posicao');
+    }
+
+    function montarGradePosicoes() {
+      const grade = document.getElementById('grade-posicoes');
+      grade.innerHTML = Array.from({ length: POSICOES_POR_ANDAR }, (_, i) => i + 1).map((posicao) => {
+        const livre = posicoesLivresDaRua.find((p) => p.andar === selecao.andar && p.posicao === posicao);
+        const codigo = formatarEndereco(selecao.rua, selecao.andar, posicao);
+        return `
+          <button type="button" class="btn btn-posicao" data-posicao-id="${livre ? livre.id : ''}" data-codigo="${codigo}" ${livre ? '' : 'disabled'}>
+            P${String(posicao).padStart(2, '0')}
+          </button>`;
+      }).join('');
+      grade.querySelectorAll('button:not(:disabled)').forEach((btn) => {
+        btn.addEventListener('click', () => escolherPosicao(Number(btn.dataset.posicaoId), btn.dataset.codigo));
+      });
+    }
+
+    function escolherPosicao(posicaoId, codigo) {
+      selecao.posicaoId = posicaoId;
+      selecao.posicaoCodigo = codigo;
+      document.getElementById('endereco-final').textContent = codigo;
+      mostrarEtapa('confirmar');
+    }
+
+    document.getElementById('btn-sugestao').addEventListener('click', async () => {
+      mostrarCarregando(true);
+      limparInline('erro-armazenagem');
+      try {
+        const sugestao = await Api.sugestao(paleteId);
+        selecao.rua = sugestao.rua;
+        selecao.andar = sugestao.andar;
+        selecao.posicaoId = sugestao.id;
+        selecao.posicaoCodigo = sugestao.codigo;
+        document.getElementById('endereco-final').textContent = sugestao.codigo;
+        mostrarEtapa('confirmar');
+      } catch (erro) {
+        mostrarErroInline('erro-armazenagem', erro);
+      } finally {
+        mostrarCarregando(false);
+      }
+    });
+
+    document.getElementById('btn-confirmar-armazenagem').addEventListener('click', async () => {
+      if (!selecao.posicaoId) return;
+      mostrarCarregando(true);
+      limparInline('erro-armazenagem');
+      try {
+        await Api.armazenar(paleteId, selecao.posicaoId);
+        mostrarAlertaCheio({
+          tipo: 'sucesso',
+          titulo: 'Palete armazenado!',
+          mensagem: `${palete.codigo} guardado em ${selecao.posicaoCodigo}.`,
+          textoBotao: 'Ver paletes em doca',
+          aoFechar: () => { window.location.href = 'paletes.html'; },
+        });
+      } catch (erro) {
+        // 409 — a validação é no servidor, não na tela. Alerta de tela cheia de propósito.
+        mostrarAlertaCheio({
+          tipo: 'erro',
+          titulo: erro.status === 409 ? 'Posição já ocupada!' : 'Não foi possível armazenar',
+          mensagem: erro.mensagem || 'Escolha uma posição livre.',
+          textoBotao: 'Escolher outra posição',
+          aoFechar: async () => {
+            selecao.posicaoId = null;
+            mostrarCarregando(true);
+            try {
+              posicoesLivresDaRua = await Api.posicoesLivres(selecao.rua);
+              montarGradePosicoes();
+            } finally {
+              mostrarCarregando(false);
+            }
+            mostrarEtapa('posicao');
+          },
+        });
+      } finally {
+        mostrarCarregando(false);
+      }
+    });
+
+    carregarPalete();
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<div class="page-header">
+  <div>
+    <h1>Conferência cega</h1>
+    @if (nota(); as n) {
+      <p class="texto-fraco">NF {{ n.numero }}/{{ n.serie }} · {{ n.fornecedor }} · {{ formatarData(n.dataEmissao) }}</p>
+    }
+  </div>
+</div>
+
+<div class="aviso-cega">
+  🙈 A quantidade da nota fiscal não é exibida. Conte fisicamente e digite o que encontrou.
+</div>
+
+@if (erro()) {
+  <div class="erro-box mt-16">{{ erro() }}</div>
+}
+
+@if (carregando()) {
+  <div class="vazio">Carregando nota fiscal...</div>
+} @else {
+  <div class="itens-conferencia mt-16">
+    @for (linha of linhas(); track linha.produtoId; let i = $index) {
+      <div class="card campo-item">
+        <label [attr.for]="'fardos-' + i">{{ linha.sabor }} — fardos contados</label>
+        <input
+          [id]="'fardos-' + i"
+          type="number"
+          min="0"
+          inputmode="numeric"
+          placeholder="0"
+          [ngModel]="linha.fardosConferidos"
+          (ngModelChange)="atualizarFardos(i, $event)"
+          name="fardos-{{ i }}"
+        />
+      </div>
+    }
+  </div>
+
+  @if (precisaObservacao()) {
+    <div class="mt-16">
+      <label for="observacao">Observação da divergência (obrigatória)</label>
+      <textarea
+        id="observacao"
+        name="observacao"
+        rows="3"
+        [(ngModel)]="observacao"
+        placeholder="Ex.: faltaram 2 fardos, caixa avariada..."
+      ></textarea>
+    </div>
+  }
+
+  <button type="button" class="btn-toque-cheio mt-24" [disabled]="enviando()" (click)="confirmar()">
+    {{ enviando() ? 'Enviando...' : (precisaObservacao() ? 'Reenviar com observação' : 'Confirmar contagem') }}
+  </button>
+}

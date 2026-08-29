@@ -1,0 +1,144 @@
+<div class="page-header">
+  <div class="titulo-area">
+    <button type="button" class="btn-voltar" (click)="voltar()" title="Voltar">←</button>
+    <div>
+      <h1>Lançar Nota Fiscal</h1>
+      <p class="texto-fraco">A carga será direcionada a uma das 4 docas de recebimento.</p>
+    </div>
+  </div>
+</div>
+
+<form (ngSubmit)="salvar()">
+  <section class="card mb-24">
+    <div class="card-titulo">Dados da nota</div>
+
+    <div class="grid-campos">
+      <div>
+        <label for="numero">Número</label>
+        <input id="numero" name="numero" type="text" placeholder="000126" [(ngModel)]="numero" />
+      </div>
+
+      <div>
+        <label for="serie">Série</label>
+        <input id="serie" name="serie" type="text" placeholder="1" [(ngModel)]="serie" />
+      </div>
+
+      <div class="col-2">
+        <label for="fornecedor">Fornecedor</label>
+        <input
+          id="fornecedor"
+          name="fornecedor"
+          type="text"
+          placeholder="Razão social do fornecedor"
+          [(ngModel)]="fornecedor"
+        />
+      </div>
+
+      <div>
+        <label for="doca">Doca de recebimento</label>
+        <select id="doca" name="doca" [(ngModel)]="docaId">
+          <option [ngValue]="null">Selecione...</option>
+          @for (d of docas(); track d.id) {
+            <option [ngValue]="d.id">{{ d.descricao }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="card mb-24">
+    <div class="flex-entre mb-16">
+      <div class="card-titulo" style="margin-bottom: 0">Itens da nota</div>
+      <button type="button" class="secundario" (click)="adicionarItem()">+ Adicionar item</button>
+    </div>
+
+    <div class="itens">
+      @for (item of itens(); track $index) {
+        <div class="item-linha">
+          <div class="item-campo">
+            <label [attr.for]="'produto-' + $index">Sabor</label>
+            <select
+              [id]="'produto-' + $index"
+              [value]="item.produtoId ?? ''"
+              (change)="atualizarProduto($index, $any($event.target).value)"
+            >
+              <option value="">Selecione...</option>
+              @for (p of produtos(); track p.id) {
+                <option [value]="p.id">{{ p.sabor }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="item-campo estreito">
+            <label [attr.for]="'fardos-' + $index">Fardos</label>
+            <input
+              [id]="'fardos-' + $index"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="0"
+              [value]="item.fardosEsperados ?? ''"
+              (input)="atualizarFardos($index, $any($event.target).value)"
+            />
+          </div>
+
+          <div class="item-calc">
+            <span class="calc-rotulo">Paletes</span>
+            <span class="calc-valor">{{ paletesDoItem(item.fardosEsperados) }}</span>
+          </div>
+
+          <button
+            type="button"
+            class="perigo btn-remover"
+            [disabled]="itens().length === 1"
+            (click)="removerItem($index)"
+            title="Remover item"
+          >
+            ×
+          </button>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="card resumo mb-24">
+    <div class="card-titulo">Resumo do recebimento</div>
+
+    <div class="resumo-grid">
+      <div class="resumo-item">
+        <span class="resumo-valor">{{ totalFardos() | number }}</span>
+        <span class="resumo-rotulo">Fardos</span>
+      </div>
+      <div class="resumo-item destaque">
+        <span class="resumo-valor">{{ totalPaletes() | number }}</span>
+        <span class="resumo-rotulo">Paletes gerados</span>
+      </div>
+      <div class="resumo-item">
+        <span class="resumo-valor">{{ totalLitros() | number }}</span>
+        <span class="resumo-rotulo">Litros</span>
+      </div>
+      <div class="resumo-item">
+        <span class="resumo-valor">{{ totalPaletes() | number }}</span>
+        <span class="resumo-rotulo">Posições necessárias</span>
+      </div>
+    </div>
+
+    <p class="regra texto-fraco">
+      Regra: 1 palete = {{ fardosPorPalete }} fardos = 600 garrafas = {{ litrosPorPalete | number }} litros.
+    </p>
+  </section>
+
+  @if (erro()) {
+    <div class="erro-box mb-16">{{ erro() }}</div>
+  }
+  @if (sucesso()) {
+    <div class="ok-box mb-16">{{ sucesso() }}</div>
+  }
+
+  <div class="flex-fim">
+    <button type="button" class="secundario" (click)="voltar()">Cancelar</button>
+    <button type="submit" [disabled]="salvando()">
+      {{ salvando() ? 'Lançando...' : 'Lançar nota fiscal' }}
+    </button>
+  </div>
+</form>
