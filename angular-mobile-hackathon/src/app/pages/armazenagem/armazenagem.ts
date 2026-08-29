@@ -1,10 +1,19 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { ApiService } from '../../core/api.service';
 import { ANDARES, POSICOES_POR_ANDAR, RUAS } from '../../core/config';
 import { Palete, Posicao } from '../../core/models';
 import { OperadorService } from '../../core/operador.service';
+import { WebSocketService } from '../../core/websocket.service';
+
+/** Evento recebido em /topic/posicoes — ver EventoPublisher/WsEvent no backend. */
+interface EventoPosicao {
+  tipo: string;
+  payload: Posicao;
+  timestamp: number;
+}
 
 type Etapa = 'rua' | 'andar' | 'posicao' | 'confirmar';
 
@@ -20,10 +29,12 @@ interface AlertaCheio {
   templateUrl: './armazenagem.html',
   styleUrl: './armazenagem.scss',
 })
-export class Armazenagem implements OnInit {
+export class Armazenagem implements OnInit, OnDestroy {
   private api = inject(ApiService);
   private router = inject(Router);
+  private ws = inject(WebSocketService);
   protected operador = inject(OperadorService);
+  private wsSub: Subscription | null = null;
 
   protected readonly ruas = Array.from({ length: RUAS }, (_, i) => i + 1);
   protected readonly andares = Array.from({ length: ANDARES }, (_, i) => i + 1);
@@ -71,6 +82,26 @@ export class Armazenagem implements OnInit {
         this.erro.set(e?.error?.mensagem ?? 'Não foi possível carregar o palete.');
       },
     });
+
+    // Tempo real: se outro operador (ou o painel web) armazenar um palete numa
+    // posição que este aparelho estava mostrando como livre, ela some da lista
+    // na hora — evita a corrida de dois operadores escolhendo a mesma posição.
+    this.wsSub = this.ws.listen<EventoPosicao>('/topic/posicoes').subscribe((evento) => {
+      const posicao = evento.payload;
+      if (!posicao || posicao.status === 'LIVRE') return;
+
+      this.livresDaRua.update((lista) => lista.filter((p) => p.id !== posicao.id));
+
+      if (this.posicaoEscolhidaId === posicao.id) {
+        this.posicaoEscolhidaId = null;
+        this.erro.set(`Posição ${posicao.codigo} acabou de ser ocupada por outro operador. Escolha outra.`);
+        this.etapa.set('posicao');
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.wsSub?.unsubscribe();
   }
 
   protected classePasso(nome: Etapa): string {

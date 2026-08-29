@@ -1,9 +1,11 @@
 package com.projeto.hackathon.service;
 
 import com.projeto.hackathon.dto.PaleteResponseDTO;
+import com.projeto.hackathon.dto.PosicaoResponseDTO;
 import com.projeto.hackathon.entity.*;
 import com.projeto.hackathon.exception.BusinessException;
 import com.projeto.hackathon.repository.*;
+import com.projeto.hackathon.websocket.EventoPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ public class PaleteService {
     private final PosicaoRepository posicaoRepository;
     private final MovimentacaoRepository movimentacaoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final EventoPublisher eventoPublisher;
 
     public List<PaleteResponseDTO> listar(String status, Long docaId, String sabor) {
         List<Palete> paletes;
@@ -83,7 +86,20 @@ public class PaleteService {
                 .build();
         movimentacaoRepository.save(mov);
 
-        return toDTO(palete);
+        PosicaoResponseDTO posicaoDTO = PosicaoResponseDTO.builder()
+                .id(posicao.getId())
+                .rua(posicao.getRua())
+                .andar(posicao.getAndar())
+                .posicao(posicao.getPosicao())
+                .codigo(posicao.getCodigo())
+                .status(posicao.getStatus().name())
+                .build();
+        eventoPublisher.posicaoAtualizada(posicaoDTO);
+
+        PaleteResponseDTO paleteDTO = toDTO(palete);
+        eventoPublisher.paleteAtualizado(paleteDTO);
+
+        return paleteDTO;
     }
 
     public PaleteResponseDTO toDTO(Palete p) {

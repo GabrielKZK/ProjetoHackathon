@@ -1,6 +1,13 @@
 /** Trocar por IP na hora da demo: 'http://192.168.x.x:9999/api' */
 export const API_URL = 'http://localhost:9999/api';
 
+/**
+ * URL do endpoint WebSocket (STOMP) do backend — mesmo host/porta do API_URL,
+ * so troca o protocolo (http->ws, https->wss) e o path para o que foi
+ * registrado em WebSocketConfig.java (/ws).
+ */
+export const WS_URL = API_URL.replace(/^http/, 'ws').replace(/\/api\/?$/, '') + '/ws';
+
 /** true = dados falsos locais. false = backend real. Unica mudanca na integracao. */
 export const USAR_MOCK = false;
 

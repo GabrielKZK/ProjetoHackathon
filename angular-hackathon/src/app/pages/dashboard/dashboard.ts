@@ -1,9 +1,11 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { ApiService } from '../../core/api.service';
 import { CAPACIDADE_LITROS, TOTAL_POSICOES } from '../../core/config';
 import { EstoqueSabor, Posicao, RelatorioOcupacao } from '../../core/models';
+import { WebSocketService } from '../../core/websocket.service';
 import { BarraProgresso } from '../../shared/barra-progresso/barra-progresso';
 import { CardMetrica } from '../../shared/card-metrica/card-metrica';
 import { MapaGalpao } from '../../shared/mapa-galpao/mapa-galpao';
@@ -19,7 +21,9 @@ const INTERVALO_MS = 3000;
 })
 export class Dashboard implements OnInit, OnDestroy {
   private api = inject(ApiService);
+  private ws = inject(WebSocketService);
   private timer: ReturnType<typeof setInterval> | null = null;
+  private wsSubs: Subscription[] = [];
 
   protected readonly totalPosicoes = TOTAL_POSICOES;
   protected readonly capacidadeLitros = CAPACIDADE_LITROS;
@@ -54,11 +58,21 @@ export class Dashboard implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.atualizar();
+    // Polling continua como rede de seguranca; o WebSocket faz a atualizacao
+    // ser instantanea assim que o backend confirma uma mudanca (nota conferida,
+    // palete armazenado, posicao ocupada) vinda do app mobile ou de outra aba.
     this.timer = setInterval(() => this.atualizar(), INTERVALO_MS);
+
+    this.wsSubs.push(
+      this.ws.listen('/topic/notas-fiscais').subscribe(() => this.atualizar()),
+      this.ws.listen('/topic/paletes').subscribe(() => this.atualizar()),
+      this.ws.listen('/topic/posicoes').subscribe(() => this.atualizar()),
+    );
   }
 
   ngOnDestroy(): void {
     if (this.timer) clearInterval(this.timer);
+    this.wsSubs.forEach((s) => s.unsubscribe());
   }
 
   protected atualizar(): void {
