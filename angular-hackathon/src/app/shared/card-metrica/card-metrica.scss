@@ -1,0 +1,54 @@
+.metrica {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--laranja);
+  border-radius: var(--raio);
+  padding: 20px 22px;
+  box-shadow: var(--sombra);
+  height: 100%;
+}
+
+.cor-verde { border-top-color: var(--verde); }
+.cor-vermelho { border-top-color: var(--vermelho); }
+.cor-amarelo { border-top-color: var(--amarelo); }
+.cor-neutro { border-top-color: var(--cinza); }
+
+.titulo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+  margin-bottom: 10px;
+}
+
+.valor-linha {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.valor {
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.destaque .valor {
+  font-size: 3.2rem;
+}
+
+.unidade {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--texto-fraco);
+}
+
+.detalhe {
+  margin-top: 8px;
+  font-size: 0.86rem;
+  color: var(--texto-fraco);
+}

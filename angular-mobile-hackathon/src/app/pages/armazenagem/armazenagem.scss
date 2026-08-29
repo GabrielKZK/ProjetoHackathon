@@ -1,0 +1,145 @@
+.passos {
+  display: flex;
+  gap: 6px;
+  margin: 4px 0 18px;
+}
+.passo {
+  flex: 1;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--texto-fraco);
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--border);
+}
+.passo.ativo {
+  color: var(--laranja);
+  border-color: var(--laranja);
+}
+.passo.feito {
+  color: var(--verde);
+  border-color: var(--verde);
+}
+
+.btn-sugestao {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.subtitulo-etapa {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--texto-fraco);
+  margin-bottom: 12px;
+}
+
+.grade-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.grade-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.btn-toque {
+  min-height: 64px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: var(--raio);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.btn-toque small {
+  font-weight: 500;
+  font-size: 0.7rem;
+  opacity: 0.85;
+}
+
+.btn-posicao {
+  min-height: 56px;
+  font-weight: 700;
+  border-radius: var(--raio);
+  border: 2px solid var(--verde);
+  background: transparent;
+  color: var(--verde);
+}
+.btn-posicao:disabled {
+  border-color: var(--border);
+  background: var(--surface-2);
+  color: var(--texto-fraco);
+  opacity: 1;
+}
+
+.btn-largo {
+  width: 100%;
+}
+
+.endereco-confirmacao {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.endereco-final {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--laranja);
+  margin-top: 4px;
+}
+
+.btn-toque-cheio {
+  width: 100%;
+  min-height: 60px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.overlay-alerta {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 24px;
+  color: #fff;
+}
+.overlay-alerta.erro {
+  background: #c62d2d;
+}
+.overlay-alerta.sucesso {
+  background: #16913f;
+}
+.overlay-icone {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+.overlay-alerta h2 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+.overlay-alerta p {
+  font-size: 1.1rem;
+  margin-bottom: 28px;
+  max-width: 340px;
+}
+.overlay-botao {
+  min-width: 220px;
+  min-height: 56px;
+  font-weight: 800;
+  background: #fff;
+  color: #111;
+}
+.overlay-botao:hover {
+  background: #eee;
+}

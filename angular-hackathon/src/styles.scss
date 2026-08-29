@@ -1,0 +1,274 @@
+/* ============================================================
+   GOLLINHO WMS - estilos globais - paleta escura industrial
+   ============================================================ */
+
+:root {
+  --bg: #0d1014;
+  --surface: #161a21;
+  --surface-2: #1e242e;
+  --surface-3: #262d3a;
+  --border: #2b3240;
+
+  --texto: #eef2f7;
+  --texto-fraco: #94a1b5;
+
+  --laranja: #ff7a1a;
+  --laranja-esc: #d95f00;
+
+  --verde: #22c55e;
+  --vermelho: #ef4444;
+  --amarelo: #f59e0b;
+  --cinza: #6b7280;
+  --azul: #3b82f6;
+
+  --raio: 10px;
+  --sombra: 0 4px 16px rgba(0, 0, 0, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--texto);
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+a {
+  color: var(--laranja);
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface-3);
+  border-radius: 6px;
+}
+
+/* ---------------- Cartoes ---------------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--raio);
+  padding: 20px;
+  box-shadow: var(--sombra);
+}
+
+.card-titulo {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+  margin-bottom: 14px;
+}
+
+/* ---------------- Formularios ---------------- */
+label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+  margin-bottom: 6px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--texto);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--laranja);
+  box-shadow: 0 0 0 3px rgba(255, 122, 26, 0.2);
+}
+
+input::placeholder {
+  color: #5b6577;
+}
+
+/* ---------------- Botoes ---------------- */
+button {
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #fff;
+  background: var(--laranja);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+
+button:hover:not(:disabled) {
+  background: var(--laranja-esc);
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+button.secundario {
+  background: transparent;
+  color: var(--texto);
+  border: 1px solid var(--border);
+}
+button.secundario:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+
+button.perigo {
+  background: var(--vermelho);
+}
+button.perigo:hover:not(:disabled) {
+  background: #c62d2d;
+}
+
+/* ---------------- Tabelas ---------------- */
+.tabela-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--raio);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.98rem;
+}
+
+th {
+  padding: 13px 16px;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+tbody tr:hover td {
+  background: var(--surface-2);
+}
+
+/* ---------------- Utilidades ---------------- */
+.grid {
+  display: grid;
+  gap: 18px;
+}
+.flex {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.flex-entre {
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-fim {
+  display: flex;
+  gap: 14px;
+  justify-content: flex-end;
+  align-items: center;
+}
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+
+.texto-fraco {
+  color: var(--texto-fraco);
+}
+.mono {
+  font-family: 'Consolas', 'Courier New', monospace;
+  letter-spacing: 0.5px;
+}
+
+.vazio {
+  padding: 44px;
+  text-align: center;
+  color: var(--texto-fraco);
+}
+
+.erro-box {
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid var(--vermelho);
+  border-radius: 8px;
+  color: #ffb4b4;
+  font-size: 0.95rem;
+}
+
+.ok-box {
+  padding: 12px 16px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid var(--verde);
+  border-radius: 8px;
+  color: #b7f0cd;
+  font-size: 0.95rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}

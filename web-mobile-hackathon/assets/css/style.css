@@ -1,0 +1,280 @@
+/* ============================================================
+   GOLLINHO WMS — Web Mobile
+   Tema escuro industrial por cima do Bootstrap 5 (data-bs-theme="dark").
+   Mesma paleta do front Angular, ajustada para telas de celular.
+   ============================================================ */
+
+:root {
+  --bg: #0d1014;
+  --surface: #161a21;
+  --surface-2: #1e242e;
+  --border: #2b3240;
+  --texto-fraco: #94a1b5;
+
+  --laranja: #ff7a1a;
+  --laranja-esc: #d95f00;
+  --verde: #22c55e;
+  --vermelho: #ef4444;
+  --amarelo: #f59e0b;
+
+  /* overrides das variáveis do Bootstrap 5.3 */
+  --bs-body-bg: var(--bg);
+  --bs-body-color: #eef2f7;
+  --bs-border-color: var(--border);
+  --bs-primary: var(--laranja);
+  --bs-primary-rgb: 255, 122, 26;
+  --bs-success: var(--verde);
+  --bs-success-rgb: 34, 197, 94;
+  --bs-danger: var(--vermelho);
+  --bs-danger-rgb: 239, 68, 68;
+  --bs-warning: var(--amarelo);
+  --bs-warning-rgb: 245, 158, 11;
+  --bs-secondary: #6b7280;
+  --bs-tertiary-bg: var(--surface-2);
+  --bs-card-bg: var(--surface);
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  font-size: 17px;
+}
+
+body {
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.app-shell {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 16px 16px 32px;
+}
+
+/* ---------------- Topbar ---------------- */
+#topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px calc(10px + env(safe-area-inset-top));
+  margin: -16px -16px 16px;
+}
+.topbar-linha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topbar-voltar {
+  font-size: 1.4rem;
+  color: #eef2f7;
+  line-height: 1;
+  padding: 4px 6px;
+}
+.topbar-voltar-espaco {
+  width: 28px;
+  display: inline-block;
+}
+.topbar-titulos {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.topbar-titulos strong {
+  font-size: 1.05rem;
+}
+.topbar-doca {
+  font-size: 0.8rem;
+  color: var(--laranja);
+  font-weight: 600;
+}
+.topbar-usuario {
+  font-size: 0.78rem;
+  color: var(--texto-fraco);
+  margin-top: 4px;
+}
+
+/* ---------------- Botões grandes (chão de fábrica: luva, luz ruim) ---------------- */
+.touch-btn {
+  min-height: 64px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+}
+.touch-btn small {
+  display: block;
+  font-weight: 500;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.grade-botoes {
+  display: grid;
+  gap: 12px;
+}
+.grade-2 { grid-template-columns: repeat(2, 1fr); }
+.grade-3 { grid-template-columns: repeat(3, 1fr); }
+.grade-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (min-width: 480px) {
+  .grade-doca { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Posições do galpão: livre / ocupada / bloqueada / selecionada */
+.btn-posicao {
+  min-height: 56px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 2px solid var(--verde);
+  background: transparent;
+  color: var(--verde);
+}
+.btn-posicao:disabled {
+  border-color: var(--border);
+  color: var(--texto-fraco);
+  background: var(--surface-2);
+  opacity: 1;
+}
+.btn-posicao.selecionada {
+  background: var(--laranja);
+  border-color: var(--laranja);
+  color: #fff;
+}
+
+/* ---------------- Cards ---------------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.card-nota, .card-palete {
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.card-nota:active, .card-palete:active {
+  transform: scale(0.98);
+}
+.card-nota:hover, .card-palete:hover {
+  border-color: var(--laranja);
+}
+
+.mono {
+  font-family: 'Consolas', 'Courier New', monospace;
+  letter-spacing: 0.5px;
+}
+
+.vazio {
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--texto-fraco);
+}
+.vazio .vazio-icone {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* ---------------- Formulários ---------------- */
+.form-control, .form-select {
+  min-height: 52px;
+  font-size: 1.05rem;
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: #eef2f7;
+}
+.form-control:focus, .form-select:focus {
+  background: var(--surface-2);
+  color: #eef2f7;
+  border-color: var(--laranja);
+  box-shadow: 0 0 0 0.2rem rgba(255, 122, 26, 0.25);
+}
+.form-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+}
+
+/* ---------------- Loading ---------------- */
+#carregando {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  background: rgba(13, 16, 20, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------- Overlay cheio (sucesso / 409) ---------------- */
+.overlay-alerta {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 24px calc(32px + env(safe-area-inset-bottom));
+  color: #fff;
+}
+.overlay-erro { background: #c62d2d; }
+.overlay-sucesso { background: #16913f; }
+.overlay-aviso { background: #a15c00; }
+.overlay-icone {
+  font-size: 4rem;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.overlay-alerta h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.overlay-alerta p {
+  font-size: 1.1rem;
+  margin-bottom: 28px;
+  max-width: 340px;
+}
+.overlay-botao {
+  min-width: 200px;
+  font-weight: 800;
+}
+
+/* ---------------- Passo a passo (armazenagem) ---------------- */
+.passos {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.passo {
+  flex: 1;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--texto-fraco);
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--border);
+}
+.passo.ativo {
+  color: var(--laranja);
+  border-color: var(--laranja);
+}
+.passo.feito {
+  color: var(--verde);
+  border-color: var(--verde);
+}
+
+.logo-gollinho {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.logo-gollinho span { color: var(--laranja); }

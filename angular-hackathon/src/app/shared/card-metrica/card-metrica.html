@@ -1,0 +1,14 @@
+<div class="metrica" [class.destaque]="destaque()" [class]="'cor-' + cor()">
+  <div class="titulo">{{ titulo() }}</div>
+
+  <div class="valor-linha">
+    <span class="valor">{{ valor() }}</span>
+    @if (unidade()) {
+      <span class="unidade">{{ unidade() }}</span>
+    }
+  </div>
+
+  @if (detalhe()) {
+    <div class="detalhe">{{ detalhe() }}</div>
+  }
+</div>

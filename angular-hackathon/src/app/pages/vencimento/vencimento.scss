@@ -1,0 +1,143 @@
+.resumo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.resumo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--cinza);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+.resumo-card.critico { border-left-color: var(--vermelho); }
+.resumo-card.alerta { border-left-color: var(--amarelo); }
+.resumo-card.ok { border-left-color: var(--verde); }
+
+.resumo-num {
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.resumo-card.critico .resumo-num { color: var(--vermelho); }
+.resumo-card.alerta .resumo-num { color: var(--amarelo); }
+.resumo-card.ok .resumo-num { color: var(--verde); }
+
+.resumo-txt {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+}
+
+.filtros {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filtro-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+  margin-right: 4px;
+}
+
+.chip {
+  padding: 8px 16px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--texto-fraco);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.chip:hover:not(:disabled) {
+  background: var(--surface-2);
+  color: var(--texto);
+}
+
+.chip.ativo {
+  color: #fff;
+  background: var(--laranja);
+  border-color: var(--laranja);
+}
+
+.col-farol {
+  width: 46px;
+  text-align: center;
+}
+
+.farol {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.farol.critico {
+  background: var(--vermelho);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.75);
+}
+.farol.alerta {
+  background: var(--amarelo);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+}
+.farol.ok {
+  background: var(--verde);
+}
+
+.forte { font-weight: 800; }
+
+.num { text-align: right; }
+
+.dias {
+  display: inline-block;
+  min-width: 46px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.dias.critico {
+  color: var(--vermelho);
+  background: rgba(239, 68, 68, 0.15);
+}
+.dias.alerta {
+  color: var(--amarelo);
+  background: rgba(245, 158, 11, 0.15);
+}
+.dias.ok {
+  color: var(--verde);
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.situacao {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.situacao.critico { color: var(--vermelho); }
+.situacao.alerta { color: var(--amarelo); }
+.situacao.ok { color: var(--verde); }
+
+.linha-critico td:first-child {
+  box-shadow: inset 3px 0 0 var(--vermelho);
+}

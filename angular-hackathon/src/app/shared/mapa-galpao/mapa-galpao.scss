@@ -1,0 +1,87 @@
+.mapa {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.bloco {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.bloco-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.bloco-titulo {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--texto-fraco);
+}
+
+.bloco-contagem {
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--laranja);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+}
+
+.celula {
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+  cursor: help;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.celula:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+  position: relative;
+  z-index: 2;
+}
+
+.livre {
+  background: var(--verde);
+}
+.ocupada {
+  background: var(--vermelho);
+}
+.bloqueada {
+  background: var(--cinza);
+}
+
+.legenda {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.84rem;
+  color: var(--texto-fraco);
+}
+
+.quadro {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  display: inline-block;
+}

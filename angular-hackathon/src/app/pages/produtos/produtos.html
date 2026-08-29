@@ -1,0 +1,91 @@
+<div class="page-header">
+  <div>
+    <h1>Produtos</h1>
+    <p class="texto-fraco">Sabores de refrigerante PET 2 Litros da linha Gollinho.</p>
+  </div>
+  <div class="contador">{{ produtos().length }} sabores</div>
+</div>
+
+<div class="layout">
+  <section class="card">
+    <div class="card-titulo">Cadastrar novo sabor</div>
+
+    <form (ngSubmit)="cadastrar()">
+      <div class="campo">
+        <label for="sabor">Sabor</label>
+        <input
+          id="sabor"
+          name="sabor"
+          type="text"
+          placeholder="Ex.: Uva"
+          [(ngModel)]="novoSabor"
+        />
+      </div>
+
+      <p class="texto-fraco formato">Formato fixo do produto: PET 2 Litros</p>
+
+      @if (erro()) {
+        <div class="erro-box mb-16">{{ erro() }}</div>
+      }
+      @if (sucesso()) {
+        <div class="ok-box mb-16">{{ sucesso() }}</div>
+      }
+
+      <button type="submit" [disabled]="salvando()">
+        {{ salvando() ? 'Salvando...' : 'Cadastrar sabor' }}
+      </button>
+    </form>
+  </section>
+
+  <section class="card">
+    <div class="card-titulo">Sabores cadastrados</div>
+
+    @if (produtos().length) {
+      <div class="lista">
+        @for (p of produtos(); track p.id) {
+          <div class="linha-produto">
+            <div class="bolinha" [class]="'sabor-' + p.id"></div>
+            <div class="info">
+              <div class="nome">{{ p.sabor }}</div>
+              <div class="formato-tag">{{ p.formato }}</div>
+            </div>
+
+            @if (confirmando() === p.id) {
+              <div class="confirmacao">
+                <span class="confirmacao-texto">Remover?</span>
+                <button
+                  type="button"
+                  class="perigo btn-mini"
+                  [disabled]="removendo() === p.id"
+                  (click)="confirmarRemocao(p)"
+                >
+                  {{ removendo() === p.id ? '...' : 'Sim' }}
+                </button>
+                <button
+                  type="button"
+                  class="secundario btn-mini"
+                  [disabled]="removendo() === p.id"
+                  (click)="cancelarRemocao()"
+                >
+                  Não
+                </button>
+              </div>
+            } @else {
+              <div class="id mono">#{{ p.id }}</div>
+              <button
+                type="button"
+                class="btn-remover-sabor"
+                title="Remover sabor"
+                (click)="pedirRemocao(p.id)"
+              >
+                🗑
+              </button>
+            }
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="vazio">Nenhum sabor cadastrado ainda.</div>
+    }
+  </section>
+</div>

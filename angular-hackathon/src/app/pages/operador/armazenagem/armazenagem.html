@@ -1,0 +1,100 @@
+<div class="page-header">
+  <div>
+    <h1>Armazenagem</h1>
+    @if (palete(); as p) {
+      <p class="texto-fraco mono">{{ p.codigo }} · {{ p.produto.sabor }} · {{ p.fardos }} fardos</p>
+    }
+  </div>
+</div>
+
+@if (erro()) {
+  <div class="erro-box mb-16">{{ erro() }}</div>
+}
+
+@if (carregando()) {
+  <div class="vazio">Carregando palete...</div>
+} @else if (palete()) {
+  <div class="passos">
+    <div class="passo" [class]="classePasso('rua')">Rua</div>
+    <div class="passo" [class]="classePasso('andar')">Andar</div>
+    <div class="passo" [class]="classePasso('posicao')">Posição</div>
+    <div class="passo" [class]="classePasso('confirmar')">Confirmar</div>
+  </div>
+
+  <button type="button" class="secundario btn-sugestao" [disabled]="processando()" (click)="usarSugestao()">
+    💡 Usar sugestão do sistema
+  </button>
+
+  @switch (etapa()) {
+    @case ('rua') {
+      <h2 class="subtitulo-etapa">1. Escolha a rua</h2>
+      <div class="grade-3">
+        @for (rua of ruas; track rua) {
+          <button type="button" class="btn-toque" [disabled]="processando()" (click)="escolherRua(rua)">
+            Rua {{ rua }}
+          </button>
+        }
+      </div>
+    }
+
+    @case ('andar') {
+      <h2 class="subtitulo-etapa">2. Escolha o andar</h2>
+      <div class="grade-4">
+        @for (andar of andares; track andar) {
+          <button
+            type="button"
+            class="btn-toque"
+            [disabled]="livresNoAndar(andar) === 0"
+            (click)="escolherAndar(andar)"
+          >
+            Andar {{ andar }}
+            <small>{{ livresNoAndar(andar) }} livre(s)</small>
+          </button>
+        }
+      </div>
+      <button type="button" class="secundario btn-largo mt-16" (click)="voltarPara('rua')">← Trocar rua</button>
+    }
+
+    @case ('posicao') {
+      <h2 class="subtitulo-etapa">3. Escolha a posição livre</h2>
+      <div class="grade-4">
+        @for (posicao of posicoesPorAndar; track posicao) {
+          <button
+            type="button"
+            class="btn-posicao"
+            [disabled]="!posicaoLivre(posicao)"
+            (click)="escolherPosicao(posicao)"
+          >
+            P{{ codigoPosicao(posicao) }}
+          </button>
+        }
+      </div>
+      <button type="button" class="secundario btn-largo mt-16" (click)="voltarPara('andar')">← Trocar andar</button>
+    }
+
+    @case ('confirmar') {
+      <h2 class="subtitulo-etapa">4. Confirmar posição</h2>
+      <div class="card endereco-confirmacao">
+        <div class="texto-fraco">Endereço final</div>
+        <div class="endereco-final mono">{{ enderecoEscolhido }}</div>
+      </div>
+      <button type="button" class="btn-toque-cheio" [disabled]="processando()" (click)="confirmarArmazenagem()">
+        {{ processando() ? 'Armazenando...' : 'Confirmar armazenagem' }}
+      </button>
+      <button type="button" class="secundario btn-largo mt-16" (click)="voltarPara('posicao')">
+        ← Escolher outra posição
+      </button>
+    }
+  }
+}
+
+@if (alertaCheio(); as a) {
+  <div class="overlay-alerta" [class.sucesso]="a.tipo === 'sucesso'" [class.erro]="a.tipo === 'erro'">
+    <div class="overlay-icone">{{ a.tipo === 'sucesso' ? '✓' : '⚠' }}</div>
+    <h2>{{ a.titulo }}</h2>
+    <p>{{ a.mensagem }}</p>
+    <button type="button" class="overlay-botao" (click)="fecharAlerta()">
+      {{ a.tipo === 'sucesso' ? 'Ver paletes em doca' : 'Escolher outra posição' }}
+    </button>
+  </div>
+}

@@ -1,0 +1,46 @@
+<div class="page-header">
+  <div>
+    <h1>Paletes em doca</h1>
+    <p class="texto-fraco">Toque num palete para armazená-lo numa posição livre.</p>
+  </div>
+</div>
+
+@if (resumo(); as r) {
+  <div class="card resumo-conferencia mb-16">
+    <div class="flex-entre">
+      <div>
+        <strong>{{ r.status === 'CONFERIDA' ? 'Conferência batida!' : 'Registrada como divergente' }}</strong>
+        <p class="texto-fraco">{{ r.codigos.length }} palete(s) gerado(s): {{ r.codigos.join(', ') || '—' }}</p>
+      </div>
+      <button type="button" class="secundario" (click)="fecharResumo()">✕</button>
+    </div>
+  </div>
+}
+
+@if (erro()) {
+  <div class="erro-box mb-16">{{ erro() }}</div>
+}
+
+@if (carregando()) {
+  <div class="vazio">Carregando paletes...</div>
+} @else if (paletes().length === 0) {
+  <div class="vazio">📦 Nenhum palete aguardando armazenagem nesta doca.</div>
+} @else {
+  <div class="lista-paletes">
+    @for (palete of paletes(); track palete.id) {
+      <div class="card card-palete flex-entre">
+        <div>
+          <div class="mono palete-codigo">{{ palete.codigo }}</div>
+          <div class="texto-fraco">{{ palete.produto.sabor }}</div>
+          <div class="texto-fraco palete-meta">
+            {{ palete.fardos }} fardos · {{ palete.garrafas }} garrafas · {{ palete.litros }} L
+            @if (palete.parcial) {
+              · <span class="tag-parcial">parcial</span>
+            }
+          </div>
+        </div>
+        <button type="button" (click)="armazenar(palete)">Armazenar</button>
+      </div>
+    }
+  </div>
+}

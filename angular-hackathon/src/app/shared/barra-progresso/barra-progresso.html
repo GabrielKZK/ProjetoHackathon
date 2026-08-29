@@ -1,0 +1,19 @@
+<div class="linha">
+  @if (rotulo()) {
+    <span class="rotulo">{{ rotulo() }}</span>
+  }
+
+  <div class="trilho" [style.height.px]="altura()">
+    <div
+      class="preenchimento"
+      [style.width.%]="largura()"
+      [style.background]="cor()"
+    ></div>
+  </div>
+
+  <span class="valor">{{ largura() | number: '1.0-1' }}%</span>
+</div>
+
+@if (detalhe()) {
+  <div class="detalhe">{{ detalhe() }}</div>
+}

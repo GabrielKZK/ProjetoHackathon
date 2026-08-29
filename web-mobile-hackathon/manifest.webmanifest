@@ -1,0 +1,16 @@
+{
+  "name": "Gollinho WMS — Operador",
+  "short_name": "Gollinho WMS",
+  "description": "Conferência cega e armazenagem de paletes — WMS Gollinho",
+  "start_url": "index.html",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1014",
+  "theme_color": "#0d1014",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

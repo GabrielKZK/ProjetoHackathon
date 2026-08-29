@@ -1,0 +1,47 @@
+<div class="tela">
+  <form class="caixa" (ngSubmit)="entrar()">
+    <div class="marca">
+      <div class="logo">G</div>
+      <div>
+        <h1 class="titulo">GOLLINHO</h1>
+        <p class="sub">Operador — Conferência &amp; Armazenagem</p>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="login">Login</label>
+      <input
+        id="login"
+        name="login"
+        type="text"
+        autocomplete="username"
+        placeholder="seu usuário"
+        [(ngModel)]="login"
+      />
+    </div>
+
+    <div class="campo">
+      <label for="senha">Senha</label>
+      <input
+        id="senha"
+        name="senha"
+        type="password"
+        autocomplete="current-password"
+        placeholder="sua senha"
+        [(ngModel)]="senha"
+      />
+    </div>
+
+    @if (erro()) {
+      <div class="erro-box">{{ erro() }}</div>
+    }
+
+    <button type="submit" class="btn-entrar" [disabled]="carregando()">
+      {{ carregando() ? 'Entrando...' : 'Entrar' }}
+    </button>
+
+    @if (usarMock) {
+      <p class="dica">Modo mock ativo. Qualquer login entra.</p>
+    }
+  </form>
+</div>

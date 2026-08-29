@@ -1,0 +1,23 @@
+.lista-paletes {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.card-palete {
+  align-items: center;
+}
+.palete-codigo {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.palete-meta {
+  font-size: 0.85rem;
+  margin-top: 2px;
+}
+.tag-parcial {
+  color: var(--amarelo);
+  font-weight: 700;
+}
+.resumo-conferencia {
+  border-color: var(--laranja);
+}

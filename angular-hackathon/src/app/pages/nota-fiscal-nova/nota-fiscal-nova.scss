@@ -1,0 +1,155 @@
+.titulo-area {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-voltar {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--texto);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.btn-voltar:hover:not(:disabled) {
+  background: var(--surface-2);
+  border-color: var(--laranja);
+  color: var(--laranja);
+  transform: translateX(-2px);
+}
+
+.grid-campos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.col-2 {
+  grid-column: span 2;
+}
+
+.itens {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-linha {
+  display: grid;
+  grid-template-columns: 1fr 150px 110px 48px;
+  gap: 12px;
+  align-items: end;
+  padding: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.item-campo {
+  min-width: 0;
+}
+
+.item-calc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: var(--surface-3);
+  border-radius: 8px;
+  height: 48px;
+}
+
+.calc-rotulo {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+}
+
+.calc-valor {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--laranja);
+  line-height: 1.1;
+}
+
+.btn-remover {
+  height: 48px;
+  padding: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.resumo {
+  border-left: 3px solid var(--laranja);
+}
+
+.resumo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+.resumo-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.resumo-item.destaque {
+  border-color: var(--laranja);
+  background: rgba(255, 122, 26, 0.08);
+}
+
+.resumo-valor {
+  font-size: 1.9rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.resumo-item.destaque .resumo-valor {
+  color: var(--laranja);
+}
+
+.resumo-rotulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+}
+
+.regra {
+  margin-top: 16px;
+  font-size: 0.84rem;
+}
+
+@media (max-width: 800px) {
+  .grid-campos,
+  .item-linha {
+    grid-template-columns: 1fr;
+  }
+  .col-2 {
+    grid-column: span 1;
+  }
+  .btn-remover {
+    width: 100%;
+  }
+}
