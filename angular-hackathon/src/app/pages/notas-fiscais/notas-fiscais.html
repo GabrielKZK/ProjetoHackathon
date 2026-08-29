@@ -50,7 +50,7 @@
           <td>{{ nota.fornecedor }}</td>
           <td class="mono">{{ data(nota.dataEmissao) }}</td>
           <td>
-            <span class="doca">{{ nota.doca.descricao }}</span>
+            <span class="doca">{{ nomeDoca(nota.docaId) }}</span>
           </td>
           <td class="num">{{ totalFardos(nota) }}</td>
           <td class="num forte">{{ totalPaletes(nota) }}</td>
@@ -75,9 +75,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @for (item of nota.itens; track item.produto.id) {
+                    @for (item of nota.itens; track item.produtoId) {
                       <tr>
-                        <td>{{ item.produto.sabor }}</td>
+                        <td>{{ item.sabor }}</td>
                         <td class="num">{{ item.fardosEsperados }}</td>
                         <td class="num">{{ item.fardosConferidos }}</td>
                         <td

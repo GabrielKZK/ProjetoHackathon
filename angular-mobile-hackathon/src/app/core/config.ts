@@ -1,8 +1,8 @@
-/** Trocar por IP na hora da demo: 'http://192.168.x.x:8080/api' */
-export const API_URL = 'http://localhost:8080/api';
+/** Trocar por IP na hora da demo: 'http://192.168.x.x:9999/api' */
+export const API_URL = 'http://localhost:9999/api';
 
 /** true = dados falsos locais. false = backend real. Unica mudanca na integracao. */
-export const USAR_MOCK = true;
+export const USAR_MOCK = false;
 
 /** ===== Regras de negocio do galpao Gollinho ===== */
 export const RUAS = 6;

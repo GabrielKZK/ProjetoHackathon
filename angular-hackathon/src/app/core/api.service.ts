@@ -71,7 +71,7 @@ export class ApiService {
    */
   removerProduto(id: number): Observable<void> {
     if (USAR_MOCK) {
-      const emUso = this.notasMock.some((n) => n.itens.some((i) => i.produto.id === id));
+      const emUso = this.notasMock.some((n) => n.itens.some((i) => i.produtoId === id));
       if (emUso) {
         return throwError(() => ({
           error: {
@@ -122,16 +122,16 @@ export class ApiService {
         serie: nota.serie,
         fornecedor: nota.fornecedor,
         dataEmissao: new Date().toISOString().slice(0, 10),
-        doca,
+        docaId: doca.id,
         status: 'AGUARDANDO_CONFERENCIA',
-        itens: nota.itens.map((i) => ({
-          produto: {
-            id: Number(i.produtoId),
-            sabor: this.produtosMock.find((p) => p.id === Number(i.produtoId))?.sabor ?? '?',
-          },
+        itens: nota.itens.map((i, indice) => ({
+          id: indice + 1,
+          produtoId: Number(i.produtoId),
+          sabor: this.produtosMock.find((p) => p.id === Number(i.produtoId))?.sabor ?? '?',
           fardosEsperados: Number(i.fardosEsperados),
           fardosConferidos: 0,
         })),
+        observacao: null,
       };
       this.notasMock.unshift(criada);
       return this.fake(criada);

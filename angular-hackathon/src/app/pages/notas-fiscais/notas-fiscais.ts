@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 
 import { ApiService } from '../../core/api.service';
 import { formatarData, paletesDeFardos } from '../../core/config';
-import { NotaFiscal, StatusNota } from '../../core/models';
+import { Doca, NotaFiscal, StatusNota } from '../../core/models';
 import { BadgeStatus } from '../../shared/badge-status/badge-status';
 
 @Component({
@@ -18,6 +18,7 @@ export class NotasFiscais implements OnInit {
   private api = inject(ApiService);
 
   protected notas = signal<NotaFiscal[]>([]);
+  protected docas = signal<Doca[]>([]);
   protected carregando = signal(true);
   protected erro = signal('');
   protected filtro = signal<'TODAS' | StatusNota>('TODAS');
@@ -37,7 +38,13 @@ export class NotasFiscais implements OnInit {
   });
 
   ngOnInit(): void {
+    this.api.listarDocas().subscribe({ next: (l) => this.docas.set(l) });
     this.carregar();
+  }
+
+  /** A API devolve so o docaId; o nome vem da lista de docas. */
+  protected nomeDoca(docaId: number): string {
+    return this.docas().find((d) => d.id === docaId)?.descricao ?? `Doca ${docaId}`;
   }
 
   protected carregar(): void {

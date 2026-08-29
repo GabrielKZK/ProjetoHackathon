@@ -53,8 +53,8 @@ export class Conferencia implements OnInit {
         this.nota.set(nota);
         this.linhas.set(
           nota.itens.map((item) => ({
-            produtoId: item.produto.id,
-            sabor: item.produto.sabor,
+            produtoId: item.produtoId,
+            sabor: item.sabor,
             fardosConferidos: null,
           })),
         );

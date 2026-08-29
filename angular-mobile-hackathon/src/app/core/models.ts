@@ -19,7 +19,9 @@ export interface Doca {
 }
 
 export interface ItemNota {
-  produto: { id: number; sabor: string };
+  id: number;
+  produtoId: number;
+  sabor: string;
   fardosEsperados: number;
   fardosConferidos: number;
 }
@@ -30,9 +32,10 @@ export interface NotaFiscal {
   serie: string;
   fornecedor: string;
   dataEmissao: string;
-  doca: Doca;
+  docaId: number;
   status: StatusNota;
   itens: ItemNota[];
+  observacao: string | null;
 }
 
 export interface Posicao {
@@ -56,7 +59,8 @@ export interface ErroApi {
 export interface Palete {
   id: number;
   codigo: string;
-  produto: { id: number; sabor: string };
+  produtoId: number;
+  sabor: string;
   fardos: number;
   garrafas: number;
   litros: number;
@@ -64,6 +68,9 @@ export interface Palete {
   status: 'EM_DOCA' | 'ARMAZENADO';
   docaId: number;
   posicaoId: number | null;
+  posicaoCodigo: string | null;
+  dataFabricacao: string;
+  dataValidade: string;
 }
 
 export interface ItemConferido {

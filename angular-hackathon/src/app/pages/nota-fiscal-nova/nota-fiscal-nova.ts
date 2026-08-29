@@ -135,7 +135,10 @@ export class NotaFiscalNova implements OnInit {
     this.api.criarNota(payload).subscribe({
       next: (nota) => {
         this.salvando.set(false);
-        this.sucesso.set(`NF ${nota.numero} lançada e direcionada a ${nota.doca.descricao}.`);
+        const doca = this.docas().find((d) => d.id === nota.docaId);
+        this.sucesso.set(
+          `NF ${nota.numero} lançada e direcionada a ${doca?.descricao ?? `doca ${nota.docaId}`}.`,
+        );
         setTimeout(() => this.router.navigate(['/notas-fiscais']), 900);
       },
       error: (e) => {

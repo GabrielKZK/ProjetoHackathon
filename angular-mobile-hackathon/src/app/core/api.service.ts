@@ -52,7 +52,7 @@ export class ApiService {
   listarNotas(filtro?: { docaId?: number; status?: string }): Observable<NotaFiscal[]> {
     if (USAR_MOCK) {
       const lista = this.notasMock.filter((n) => {
-        const bateDoca = !filtro?.docaId || n.doca.id === Number(filtro.docaId);
+        const bateDoca = !filtro?.docaId || n.docaId === Number(filtro.docaId);
         const bateStatus = !filtro?.status || n.status === filtro.status;
         return bateDoca && bateStatus;
       });
@@ -90,7 +90,7 @@ export class ApiService {
 
       let divergiu = false;
       nota.itens.forEach((item) => {
-        const conferido = itens.find((i) => Number(i.produtoId) === item.produto.id);
+        const conferido = itens.find((i) => Number(i.produtoId) === item.produtoId);
         item.fardosConferidos = conferido ? Number(conferido.fardosConferidos) : 0;
         if (item.fardosConferidos !== item.fardosEsperados) divergiu = true;
       });
@@ -113,14 +113,18 @@ export class ApiService {
           const palete: Palete = {
             id: this.seqPaleteMock++,
             codigo: `PLT-${String(this.paletesMock.length + 1).padStart(6, '0')}`,
-            produto: item.produto,
+            produtoId: item.produtoId,
+            sabor: item.sabor,
             fardos: fardosPalete,
             garrafas: fardosPalete * 6,
             litros: fardosPalete * 6 * 2,
             parcial: fardosPalete < 100,
             status: 'EM_DOCA',
-            docaId: nota.doca.id,
+            docaId: nota.docaId,
             posicaoId: null,
+            posicaoCodigo: null,
+            dataFabricacao: new Date().toISOString().slice(0, 10),
+            dataValidade: new Date(Date.now() + 180 * 86400000).toISOString().slice(0, 10),
           };
           this.paletesMock.push(palete);
           paletesGerados.push(palete);
@@ -170,7 +174,7 @@ export class ApiService {
       if (!palete) return this.falha(404, 'PALETE_NAO_ENCONTRADO', 'Palete não encontrado.');
 
       const ruasComMesmoSabor = new Set(
-        MOCK_POSICOES.filter((p) => p.status === 'OCUPADA' && p.sabor === palete.produto.sabor).map((p) => p.rua),
+        MOCK_POSICOES.filter((p) => p.status === 'OCUPADA' && p.sabor === palete.sabor).map((p) => p.rua),
       );
 
       const livres = MOCK_POSICOES.filter((p) => p.status === 'LIVRE');
@@ -203,7 +207,7 @@ export class ApiService {
       }
 
       posicao.status = 'OCUPADA';
-      posicao.sabor = palete.produto.sabor;
+      posicao.sabor = palete.sabor;
       palete.status = 'ARMAZENADO';
       palete.posicaoId = posicao.id;
 

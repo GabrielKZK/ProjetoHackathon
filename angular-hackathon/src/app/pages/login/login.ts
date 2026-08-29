@@ -20,7 +20,7 @@ export class Login {
   protected readonly usarMock = USAR_MOCK;
 
   protected login = 'admin';
-  protected senha = 'admin';
+  protected senha = '123';
 
   protected carregando = signal(false);
   protected erro = signal('');

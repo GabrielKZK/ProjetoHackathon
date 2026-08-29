@@ -25,7 +25,9 @@ export interface Doca {
 }
 
 export interface ItemNota {
-  produto: { id: number; sabor: string };
+  id: number;
+  produtoId: number;
+  sabor: string;
   fardosEsperados: number;
   fardosConferidos: number;
 }
@@ -36,9 +38,10 @@ export interface NotaFiscal {
   serie: string;
   fornecedor: string;
   dataEmissao: string;
-  doca: Doca;
+  docaId: number;
   status: StatusNota;
   itens: ItemNota[];
+  observacao: string | null;
 }
 
 export interface NovaNotaFiscal {

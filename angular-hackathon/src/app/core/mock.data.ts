@@ -48,12 +48,13 @@ export const MOCK_NOTAS: NotaFiscal[] = [
     serie: '1',
     fornecedor: 'Distribuidora Sul Ltda',
     dataEmissao: '2026-08-28',
-    doca: MOCK_DOCAS[0],
+    docaId: MOCK_DOCAS[0].id,
     status: 'CONFERIDA',
     itens: [
-      { produto: { id: 1, sabor: 'Guaraná' }, fardosEsperados: 800, fardosConferidos: 800 },
-      { produto: { id: 2, sabor: 'Laranja' }, fardosEsperados: 400, fardosConferidos: 400 },
+      { id: 1, produtoId: 1, sabor: 'Guaraná', fardosEsperados: 800, fardosConferidos: 800 },
+      { id: 2, produtoId: 2, sabor: 'Laranja', fardosEsperados: 400, fardosConferidos: 400 },
     ],
+    observacao: null,
   },
   {
     id: 2,
@@ -61,9 +62,10 @@ export const MOCK_NOTAS: NotaFiscal[] = [
     serie: '1',
     fornecedor: 'Bebidas Center SA',
     dataEmissao: '2026-08-29',
-    doca: MOCK_DOCAS[2],
+    docaId: MOCK_DOCAS[2].id,
     status: 'AGUARDANDO_CONFERENCIA',
-    itens: [{ produto: { id: 3, sabor: 'Caju' }, fardosEsperados: 500, fardosConferidos: 0 }],
+    itens: [{ id: 3, produtoId: 3, sabor: 'Caju', fardosEsperados: 500, fardosConferidos: 0 }],
+    observacao: null,
   },
   {
     id: 3,
@@ -71,9 +73,10 @@ export const MOCK_NOTAS: NotaFiscal[] = [
     serie: '2',
     fornecedor: 'Log Express Transportes',
     dataEmissao: '2026-08-29',
-    doca: MOCK_DOCAS[1],
+    docaId: MOCK_DOCAS[1].id,
     status: 'DIVERGENTE',
-    itens: [{ produto: { id: 4, sabor: 'Maçã' }, fardosEsperados: 700, fardosConferidos: 680 }],
+    itens: [{ id: 4, produtoId: 4, sabor: 'Maçã', fardosEsperados: 700, fardosConferidos: 680 }],
+    observacao: 'Divergência de 20 fardos confirmada pelo operador.',
   },
 ];
 

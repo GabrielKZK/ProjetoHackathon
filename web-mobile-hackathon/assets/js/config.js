@@ -3,12 +3,12 @@
    Constantes e regras de negócio (espelha o core/config.ts do Angular)
    ============================================================ */
 
-/** Trocar por IP da rede na hora da demo: 'http://192.168.x.x:8080/api' */
-const API_URL = 'http://localhost:8080/api';
+/** Trocar por IP da rede na hora da demo: 'http://192.168.x.x:9999/api' */
+const API_URL = 'http://localhost:9999/api';
 
 /** true = dados falsos locais (funciona sem o backend). false = backend real.
  *  Única mudança necessária na hora da integração. */
-const USAR_MOCK = true;
+const USAR_MOCK = false;
 
 /* ===== Regras de negócio do galpão Gollinho ===== */
 const RUAS = 6;
